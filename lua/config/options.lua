@@ -4,3 +4,5 @@
 vim.o.guifont = "JetBrainsMono Nerd Font:h10"
 vim.g.neovide_cursor_animate_command_line = true
 vim.g.neovide_cursor_animate_in_insert_mode = true
+vim.lsp.inlay_hint.enable(false)
+vim.g.autoformat = false
