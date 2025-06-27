@@ -7,8 +7,17 @@ local overseer = require("overseer")
 -- ───── helpers ──────────────────────────────────────────────────────
 local function walk_up(start, pred)
   local dir = vim.fn.fnamemodify(start, ":p")
-  while dir ~= "" and dir ~= "/" do
-    if pred(dir) then return dir end
+  local count = 25
+  while dir ~= "" and dir ~= "/" and count > 0 do
+	count = count - 1
+	if vim.fn.isdirectory(dir .. "/cn1")==1 then
+	  if pred(dir .. "/cn1") then
+	    return dir .. "/cn1"
+	  end
+	end
+	if pred(dir) then
+	  return dir
+	end
     dir = vim.fn.fnamemodify(dir, ":h")
   end
 end
@@ -83,7 +92,7 @@ overseer.register_template({
       return not vim.tbl_isempty(vim.fn.globpath(d, "*.sln", false, true))
     end)
     if not sln_dir then return cb(nil) end
-    local sln = vim.fn.globpath(sln_dir, "*.sln", false, true)[1]
+    local sln = vim.fn.globpath(sln_dir, "*.sln", true, true)[1]
 
     local projects = {}
     for line in io.lines(sln) do
